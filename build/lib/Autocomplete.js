@@ -12,7 +12,9 @@ var Autocomplete = React.createClass({
 
   propTypes: {
     value: React.PropTypes.any,
+    onBlur: React.PropTypes.func,
     onChange: React.PropTypes.func,
+    onFocus: React.PropTypes.func,
     onSelect: React.PropTypes.func,
     shouldItemRender: React.PropTypes.func,
     getItemValue: React.PropTypes.func.isRequired,
@@ -32,7 +34,9 @@ var Autocomplete = React.createClass({
         display: 'inline-block'
       },
       inputProps: {},
+      onBlur: function onBlur() {},
       onChange: function onChange() {},
+      onFocus: function onFocus() {},
       onSelect: function onSelect(value, item) {},
       renderMenu: function renderMenu(items, value, style) {
         return React.createElement('div', { style: _extends({}, style, this.menuStyle), children: items });
@@ -302,6 +306,7 @@ var Autocomplete = React.createClass({
 
   handleInputBlur: function handleInputBlur() {
     if (this._ignoreBlur) return;
+    this.props.onBlur();
     this.setState({
       isOpen: false,
       highlightedIndex: null
@@ -310,11 +315,12 @@ var Autocomplete = React.createClass({
 
   handleInputFocus: function handleInputFocus() {
     if (this._ignoreBlur) return;
+    this.props.onFocus();
     this.setState({ isOpen: true });
   },
 
   isInputFocused: function isInputFocused() {
-    var el = React.findDOMNode(this.refs.input);
+    var el = this.refs.input;
     return el.ownerDocument && el === el.ownerDocument.activeElement;
   },
 
